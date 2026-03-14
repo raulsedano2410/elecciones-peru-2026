@@ -660,148 +660,183 @@
     }
     .animate { animation: fadeInUp 0.4s ease forwards; }
 
-    /* ========== VIDEO FLOTANTE ========== */
-    .video-section {
-      background: var(--bg2);
-      border-bottom: 1px solid var(--card-border);
-      padding: 1.5rem 1rem;
-      text-align: center;
-    }
-
-    .video-section .video-intro {
-      max-width: 600px;
-      margin: 0 auto 1rem;
-      font-size: 0.85rem;
-      color: var(--text2);
-    }
-
-    .video-section .video-intro strong {
-      color: var(--dorado);
-    }
-
-    .video-wrapper {
-      position: relative;
-      max-width: 340px;
-      margin: 0 auto;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: var(--sombra-lg);
-      border: 1px solid var(--card-border);
-      background: #000;
-    }
-
-    .video-wrapper iframe {
-      display: block;
-      width: 100%;
-      border: none;
-    }
-
-    /* Minimized floating state */
-    .video-wrapper.minimized {
+    /* ========== VIDEO WIDGET FLOTANTE ========== */
+    .video-widget {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 120px;
-      max-width: 120px;
       z-index: 999;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-      border: 2px solid var(--dorado);
-      transition: none;
-      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+      transition: opacity 0.3s;
     }
 
-    .video-wrapper.minimized iframe {
-      height: 160px;
+    .video-widget.dismissed {
+      display: none;
     }
 
-    .video-wrapper.minimized .video-label {
+    /* Expanded: shows TikTok embed */
+    .vw-expanded {
+      width: 320px;
+      background: var(--bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      border: 1px solid var(--card-border);
+      display: none;
+    }
+
+    .video-widget.open .vw-expanded {
       display: block;
     }
 
-    .video-wrapper.dismissed {
-      display: none !important;
-    }
-
-    .video-close {
-      display: none;
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 2px solid var(--card-border);
-      color: var(--text2);
-      font-size: 0.75rem;
-      font-weight: 800;
-      cursor: pointer;
-      z-index: 1000;
+    .vw-expanded-header {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      line-height: 1;
-      padding: 0;
+      justify-content: space-between;
+      padding: 0.5rem 0.7rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--card-border);
     }
 
-    .video-close:hover {
-      background: var(--rojo);
-      border-color: var(--rojo);
+    .vw-expanded-header span {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text2);
+    }
+
+    .vw-expanded-close {
+      background: none;
+      border: none;
+      color: var(--text3);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+
+    .vw-expanded-close:hover {
+      background: var(--bg3);
       color: #fff;
     }
 
-    .video-wrapper.minimized .video-close {
+    .vw-embed {
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    .vw-embed blockquote {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Collapsed pill: always visible */
+    .vw-pill {
       display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      padding: 0.4rem 0.5rem 0.4rem 0.7rem;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+      transition: all 0.2s;
+      margin-top: 8px;
     }
 
-    .video-label {
-      display: none;
-      background: rgba(0,0,0,0.85);
-      color: var(--dorado);
-      font-size: 0.55rem;
-      font-weight: 700;
-      padding: 3px 6px;
-      text-align: center;
-      letter-spacing: 0.03em;
+    .vw-pill:hover {
+      border-color: var(--dorado);
+      box-shadow: 0 6px 24px rgba(251,191,36,0.15);
     }
 
-    /* Pulse ring on minimized */
-    .video-wrapper.minimized::before {
+    .video-widget.open .vw-pill {
+      border-color: var(--dorado);
+    }
+
+    .vw-pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dorado);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .vw-pulse::after {
       content: '';
       position: absolute;
-      top: -4px; left: -4px; right: -4px; bottom: -4px;
-      border-radius: 14px;
+      top: -3px; left: -3px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
       border: 2px solid var(--dorado);
-      animation: pulse-ring 2s ease-out infinite;
-      pointer-events: none;
+      animation: pill-pulse 1.5s ease-out infinite;
     }
 
-    @keyframes pulse-ring {
-      0% { opacity: 0.6; transform: scale(1); }
-      100% { opacity: 0; transform: scale(1.08); }
+    @keyframes pill-pulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.6); }
     }
 
-    /* Placeholder while loading */
-    .video-placeholder {
+    .vw-pill-text {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text2);
+      white-space: nowrap;
+    }
+
+    .video-widget.open .vw-pill-text {
+      color: var(--dorado);
+    }
+
+    .vw-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 200px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .vw-btn-toggle {
+      background: var(--dorado);
+      color: var(--bg);
+      font-weight: 800;
+    }
+
+    .vw-btn-toggle:hover {
+      background: #fcd34d;
+      transform: scale(1.1);
+    }
+
+    .vw-btn-close {
+      background: var(--bg3);
       color: var(--text3);
-      font-size: 0.8rem;
-      gap: 0.5rem;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+
+    .vw-btn-close:hover {
+      background: var(--rojo);
+      color: #fff;
     }
 
     @media (max-width: 500px) {
-      .video-wrapper.minimized {
-        width: 100px;
-        max-width: 100px;
+      .vw-expanded {
+        width: calc(100vw - 24px);
+        right: 0;
+      }
+      .video-widget {
         bottom: 12px;
         right: 12px;
-      }
-      .video-wrapper.minimized iframe {
-        height: 135px;
       }
     }
   </style>
@@ -831,18 +866,6 @@
       <div class="flag-red"></div>
     </div>
   </header>
-
-  <!-- VIDEO -->
-  <div class="video-section" id="video-section">
-    <p class="video-intro"><strong>Escucha al autor del estudio</strong> &mdash; El Ing. Andr&eacute;s Sotil explica su an&aacute;lisis en menos de 3 minutos</p>
-    <div class="video-wrapper" id="video-wrapper">
-      <button class="video-close" id="video-close" title="Cerrar video">&#x2715;</button>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@andressotil/video/7615737430099905813" data-video-id="7615737430099905813" style="max-width:100%;min-width:100%;">
-        <section></section>
-      </blockquote>
-      <div class="video-label">Escuchando al Ing. Sotil</div>
-    </div>
-  </div>
 
   <!-- NAV -->
   <nav class="nav">
@@ -1391,8 +1414,90 @@
     })();
   </script>
 
-  <!-- TikTok embed SDK -->
-  <script async src="https://www.tiktok.com/embed.js"></script>
+  <!-- VIDEO WIDGET -->
+  <div class="video-widget" id="video-widget">
+    <div class="vw-expanded" id="vw-expanded">
+      <div class="vw-expanded-header">
+        <span>Ing. Andr&eacute;s Sotil &mdash; Autor del estudio</span>
+        <button class="vw-expanded-close" id="vw-collapse" title="Minimizar">&#x2212;</button>
+      </div>
+      <div class="vw-embed" id="vw-embed"></div>
+    </div>
+    <div class="vw-pill" id="vw-pill">
+      <div class="vw-pulse"></div>
+      <span class="vw-pill-text" id="vw-pill-text">Escuchar al autor</span>
+      <button class="vw-btn vw-btn-toggle" id="vw-toggle" title="Abrir video">&#x25B6;</button>
+      <button class="vw-btn vw-btn-close" id="vw-dismiss" title="Cerrar">&#x2715;</button>
+    </div>
+  </div>
+
+  <script>
+    // Video widget logic
+    (function() {
+      var widget = document.getElementById('video-widget');
+      var expanded = document.getElementById('vw-expanded');
+      var embed = document.getElementById('vw-embed');
+      var pill = document.getElementById('vw-pill');
+      var toggleBtn = document.getElementById('vw-toggle');
+      var collapseBtn = document.getElementById('vw-collapse');
+      var dismissBtn = document.getElementById('vw-dismiss');
+      var pillText = document.getElementById('vw-pill-text');
+      var loaded = false;
+      var isOpen = false;
+
+      function loadTikTok() {
+        if (loaded) return;
+        loaded = true;
+        embed.innerHTML = '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@andressotil/video/7615737430099905813" data-video-id="7615737430099905813" style="max-width:100%;min-width:100%;margin:0;padding:0;"><section></section></blockquote>';
+        // Load TikTok SDK
+        if (!document.getElementById('tiktok-sdk')) {
+          var s = document.createElement('script');
+          s.id = 'tiktok-sdk';
+          s.src = 'https://www.tiktok.com/embed.js';
+          s.async = true;
+          document.body.appendChild(s);
+        } else if (window.tiktokEmbed) {
+          window.tiktokEmbed.lib.render();
+        }
+      }
+
+      function openWidget() {
+        isOpen = true;
+        widget.classList.add('open');
+        toggleBtn.innerHTML = '&#x23F8;';
+        toggleBtn.title = 'Minimizar';
+        pillText.textContent = 'Reproduciendo...';
+        loadTikTok();
+      }
+
+      function closeWidget() {
+        isOpen = false;
+        widget.classList.remove('open');
+        toggleBtn.innerHTML = '&#x25B6;';
+        toggleBtn.title = 'Abrir video';
+        pillText.textContent = 'Escuchar al autor';
+      }
+
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isOpen) closeWidget(); else openWidget();
+      });
+
+      pill.addEventListener('click', function(e) {
+        if (e.target === dismissBtn || e.target === toggleBtn) return;
+        if (isOpen) closeWidget(); else openWidget();
+      });
+
+      collapseBtn.addEventListener('click', function() {
+        closeWidget();
+      });
+
+      dismissBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        widget.classList.add('dismissed');
+      });
+    })();
+  </script>
 
 </body>
 </html>
