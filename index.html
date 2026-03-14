@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elecciones Per&uacute; 2026 - Vota Informado</title>
+  <meta name="description" content="An&aacute;lisis cuantitativo simplificado de partidos pol&iacute;ticos - Elecciones Per&uacute; 2026. Basado en datos del JNE.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg2: #1e293b;
+      --bg3: #334155;
+      --card: #1e293b;
+      --card-border: #334155;
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --verde: #10b981;
+      --verde-claro: rgba(16,185,129,0.12);
+      --rojo: #ef4444;
+      --rojo-claro: rgba(239,68,68,0.12);
+      --azul: #3b82f6;
+      --naranja: #f97316;
+      --naranja-claro: rgba(249,115,22,0.12);
+      --dorado: #fbbf24;
+      --plata: #9ca3af;
+      --bronce: #d97706;
+      --sombra: 0 4px 12px rgba(0,0,0,0.3);
+      --sombra-lg: 0 8px 24px rgba(0,0,0,0.4);
+      --radio: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== HERO with Peru flag ========== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 0;
+    }
+
+    .flag-stripe {
+      display: flex;
+      height: 6px;
+    }
+
+    .flag-stripe div { flex: 1; }
+    .flag-red { background: #d91e18; }
+    .flag-white { background: #fff; }
+
+    .hero-body {
+      padding: 3rem 1.5rem 2.5rem;
+      background: linear-gradient(180deg, #0f172a 0%, #1a1a3e 50%, #1e293b 100%);
+      position: relative;
+    }
+
+    .hero-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(220,38,38,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(59,130,246,0.06) 0%, transparent 60%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      color: var(--text2);
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--text2);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .countdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.7rem 1.5rem;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text2);
+    }
+
+    .countdown .days-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--dorado);
+      line-height: 1;
+    }
+
+    /* ========== NAV ========== */
+    .nav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.6rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav a {
+      color: var(--text2);
+      text-decoration: none;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav a:hover { background: var(--bg3); color: #fff; }
+
+    /* ========== SECTIONS ========== */
+    section {
+      padding: 3rem 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-alt {
+      background: var(--bg2);
+      max-width: 100%;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-alt > .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      color: var(--text3);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: #fff;
+      margin: 2rem 0 0.8rem;
+      font-weight: 700;
+    }
+
+    p { margin-bottom: 1rem; color: var(--text2); }
+
+    /* ========== CALLOUTS ========== */
+    .callout {
+      padding: 1.2rem;
+      border-radius: var(--radio);
+      margin: 1.2rem 0;
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      font-size: 0.95rem;
+    }
+
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.4; }
+
+    .callout-success {
+      background: var(--verde-claro);
+      border: 1px solid rgba(16,185,129,0.2);
+      color: #a7f3d0;
+    }
+    .callout-success strong { color: var(--verde); }
+
+    .callout-warn {
+      background: var(--naranja-claro);
+      border: 1px solid rgba(249,115,22,0.2);
+      color: #fed7aa;
+    }
+    .callout-warn strong { color: var(--naranja); }
+
+    /* ========== TOP 3 ========== */
+    .top3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .top3-card {
+      text-align: center;
+      padding: 1.2rem 0.6rem;
+      border-radius: var(--radio);
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--sombra);
+      transition: transform 0.2s;
+    }
+
+    .top3-card:hover { transform: translateY(-3px); box-shadow: var(--sombra-lg); }
+
+    .top3-card.gold { border-top: 3px solid var(--dorado); }
+    .top3-card.silver { border-top: 3px solid var(--plata); }
+    .top3-card.bronze { border-top: 3px solid var(--bronce); }
+
+    .top3-medal {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 900;
+      margin: 0 auto 0.6rem;
+      color: #fff;
+    }
+
+    .top3-card.gold .top3-medal { background: linear-gradient(135deg, #fbbf24, #d97706); }
+    .top3-card.silver .top3-medal { background: linear-gradient(135deg, #9ca3af, #6b7280); }
+    .top3-card.bronze .top3-medal { background: linear-gradient(135deg, #d97706, #92400e); }
+
+    .top3-card .name { font-weight: 700; font-size: 0.85rem; color: #fff; margin: 0.2rem 0; }
+    .top3-card .cand { font-size: 0.7rem; color: var(--text3); }
+    .top3-card .pct { font-size: 1.6rem; font-weight: 900; color: var(--verde); margin-top: 0.4rem; }
+    .top3-card .orient-tag {
+      font-size: 0.6rem; padding: 2px 8px; border-radius: 50px;
+      display: inline-block; margin-top: 0.4rem; font-weight: 600;
+    }
+
+    /* ========== FUNNEL ========== */
+    .funnel { margin: 1.5rem 0; }
+
+    .funnel-step {
+      padding: 1.5rem;
+      border-radius: var(--radio);
+      margin-bottom: 0;
+      transition: transform 0.2s;
+    }
+    .funnel-step:hover { transform: scale(1.01); }
+
+    .funnel-connector {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.3rem 0;
+    }
+    .funnel-connector svg { width: 24px; height: 32px; color: var(--text3); }
+
+    .funnel-step .step-header {
+      display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem;
+    }
+
+    .step-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+
+    .step-number { font-size: 1.4rem; font-weight: 900; line-height: 1; }
+    .step-title { font-size: 0.95rem; font-weight: 700; }
+    .step-body { font-size: 0.9rem; color: var(--text2); line-height: 1.55; }
+    .step-body strong { color: #fff; }
+
+    .funnel-start {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+    .funnel-start .step-icon { background: rgba(239,68,68,0.15); }
+    .funnel-start .step-number { color: #fca5a5; }
+    .funnel-start .step-title { color: #fca5a5; }
+
+    .funnel-filter {
+      background: rgba(249,115,22,0.08);
+      border: 1px solid rgba(249,115,22,0.2);
+    }
+    .funnel-filter .step-icon { background: rgba(249,115,22,0.15); }
+    .funnel-filter .step-number { color: #fdba74; }
+    .funnel-filter .step-title { color: #fdba74; }
+
+    .funnel-result {
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .funnel-result .step-icon { background: rgba(16,185,129,0.15); }
+    .funnel-result .step-number { color: #6ee7b7; }
+    .funnel-result .step-title { color: #6ee7b7; }
+
+    /* ========== FILTER CARDS ========== */
+    .filter-card {
+      background: var(--card);
+      border-radius: var(--radio);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      box-shadow: var(--sombra);
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filter-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+    }
+
+    .fc-blue::before { background: var(--azul); }
+    .fc-green::before { background: var(--verde); }
+    .fc-red::before { background: var(--rojo); }
+    .fc-purple::before { background: #8b5cf6; }
+    .fc-orange::before { background: var(--naranja); }
+    .fc-teal::before { background: #14b8a6; }
+
+    .filter-card h4 {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 1rem; margin-bottom: 0.6rem; color: #fff;
+    }
+
+    .filter-card h4 .fc-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .filter-card .simple { font-size: 0.92rem; color: var(--text2); margin-bottom: 0.6rem; }
+
+    .filter-tag {
+      display: inline-block; padding: 0.25rem 0.7rem; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600;
+      margin-right: 0.3rem; margin-bottom: 0.3rem;
+    }
+
+    .tag-red { background: var(--rojo-claro); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
+    .tag-green { background: var(--verde-claro); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.25); }
+
+    /* ========== PARTIDO CARDS ========== */
+    .ranking-grid { display: grid; gap: 1rem; }
+
+    .partido-card {
+      background: var(--card);
+      border-radius: var(--radio);
+      padding: 1.5rem;
+      box-shadow: var(--sombra);
+      border: 1px solid var(--card-border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .partido-card:hover { transform: translateY(-2px); box-shadow: var(--sombra-lg); }
+
+    .partido-card.podio-1 { border-color: rgba(251,191,36,0.5); }
+    .partido-card.podio-2 { border-color: rgba(156,163,175,0.5); }
+    .partido-card.podio-3 { border-color: rgba(217,119,6,0.5); }
+
+    .partido-header {
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1rem;
+    }
+
+    .partido-rank {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 900; color: #fff; flex-shrink: 0;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #fbbf24, #d97706); }
+    .rank-2 { background: linear-gradient(135deg, #9ca3af, #6b7280); }
+    .rank-3 { background: linear-gradient(135deg, #d97706, #92400e); }
+    .rank-4,.rank-5,.rank-6,.rank-7,.rank-8 { background: var(--bg3); }
+
+    .party-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; color: #fff; flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .pa-bg { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .pa-an { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .pa-fl { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .pa-ob { background: linear-gradient(135deg, #475569, #1e293b); border: 1px solid var(--card-border); }
+    .pa-pp { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .pa-fe { background: linear-gradient(135deg, #10b981, #059669); }
+    .pa-pt { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .pa-lp { background: linear-gradient(135deg, #eab308, #a16207); }
+
+    .partido-info h3 { font-size: 1.05rem; margin: 0; color: #fff; }
+    .partido-info .candidato { font-size: 0.8rem; color: var(--text3); margin-top: 2px; }
+
+    .espectro-tag {
+      display: inline-block; font-size: 0.65rem; padding: 2px 10px;
+      border-radius: 50px; font-weight: 600; margin-top: 4px;
+    }
+
+    .esp-izq { background: rgba(239,68,68,0.15); color: #fca5a5; }
+    .esp-cen { background: rgba(251,191,36,0.15); color: #fcd34d; }
+    .esp-der { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+
+    /* Score bars - FIXED */
+    .scores { margin-top: 0.8rem; }
+
+    .score-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 0.5rem; font-size: 0.78rem;
+    }
+
+    .score-row .label { width: 80px; color: var(--text3); font-weight: 500; flex-shrink: 0; }
+
+    .score-track {
+      flex: 1; background: var(--bg); border-radius: 6px;
+      height: 10px; overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%; border-radius: 6px;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.3s;
+      width: 0;
+    }
+
+    .score-fill.animated { /* JS will set width via style */ }
+
+    .fill-pres { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+    .fill-sen { background: linear-gradient(90deg, #34d399, #10b981); }
+    .fill-dip { background: linear-gradient(90deg, #fb923c, #f97316); }
+
+    .score-row .val { width: 45px; text-align: right; font-weight: 700; color: #fff; }
+
+    .score-total {
+      text-align: center; margin-top: 0.6rem; padding-top: 0.6rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .score-total .total-num {
+      font-size: 2rem; font-weight: 900;
+      background: linear-gradient(135deg, #10b981, #14b8a6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .score-total .total-label {
+      font-size: 0.7rem; color: var(--text3); font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    /* Indicadores mini */
+    .indicadores-mini {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.4rem; margin-top: 0.8rem;
+    }
+
+    .ind-mini {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px; padding: 0.5rem;
+      text-align: center; font-size: 0.7rem; color: var(--text3);
+    }
+
+    .ind-mini .val { font-size: 0.95rem; font-weight: 700; display: block; margin-bottom: 1px; }
+    .ind-mini .val.good { color: var(--verde); }
+    .ind-mini .val.warn { color: var(--naranja); }
+
+    /* ========== DESCARTADOS ========== */
+    .no-list {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.5rem; margin: 0.8rem 0 1.5rem;
+    }
+
+    .no-item {
+      background: var(--card);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 10px; padding: 0.7rem;
+      text-align: center; font-size: 0.82rem;
+      font-weight: 600; color: #fca5a5;
+    }
+
+    .no-item .reason {
+      font-size: 0.68rem; font-weight: 400;
+      color: var(--text3); display: block; margin-top: 2px;
+    }
+
+    .no-item.no-orange {
+      border-color: rgba(249,115,22,0.2);
+      color: #fdba74;
+    }
+
+    /* ========== METHOD ========== */
+    .method-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem; margin: 1rem 0;
+    }
+
+    .method-item {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radio);
+      padding: 1.2rem 0.8rem; text-align: center;
+      box-shadow: var(--sombra);
+    }
+
+    .method-item .peso { font-size: 1.8rem; font-weight: 900; }
+    .method-item .desc { font-size: 0.78rem; color: var(--text3); margin-top: 0.3rem; line-height: 1.3; }
+    .method-item .desc strong { color: #fff; display: block; font-size: 0.85rem; margin-bottom: 0.2rem; }
+
+    .ind-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.6rem; margin: 1rem 0;
+    }
+
+    .ind-item {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 0.8rem; text-align: center;
+    }
+
+    .ind-item .ind-peso { font-size: 1.1rem; font-weight: 800; color: var(--dorado); }
+    .ind-item .ind-desc { font-size: 0.72rem; color: var(--text3); line-height: 1.3; margin-top: 0.2rem; }
+
+    /* ========== TABLE ========== */
+    .table-wrap {
+      overflow-x: auto; border-radius: var(--radio);
+      box-shadow: var(--sombra); border: 1px solid var(--card-border);
+      margin: 1rem 0;
+    }
+
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; background: var(--card); }
+    .comparison-table thead { background: var(--bg3); }
+
+    .comparison-table th {
+      padding: 0.8rem 0.5rem; text-align: center;
+      font-size: 0.72rem; font-weight: 600; color: var(--text2);
+    }
+
+    .comparison-table td {
+      padding: 0.65rem 0.5rem; text-align: center;
+      border-bottom: 1px solid var(--card-border); color: var(--text2);
+    }
+
+    .comparison-table tbody tr:hover { background: var(--bg3); }
+    .comparison-table .partido-name { text-align: left; font-weight: 600; color: #fff; white-space: nowrap; }
+    .comparison-table td strong { color: var(--verde); }
+
+    /* ========== FAQ ========== */
+    details {
+      background: var(--card); border-radius: 12px;
+      margin: 0.5rem 0; border: 1px solid var(--card-border);
+      overflow: hidden;
+    }
+
+    summary {
+      padding: 1rem 1.2rem; font-weight: 600; cursor: pointer;
+      color: #fff; font-size: 0.92rem; list-style: none;
+      display: flex; align-items: center; gap: 0.6rem; transition: background 0.2s;
+    }
+
+    summary:hover { background: var(--bg3); }
+
+    summary::before {
+      content: '+'; font-size: 1.1rem; font-weight: 800;
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--bg3); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--dorado);
+    }
+
+    details[open] summary::before { content: '-'; }
+    summary::-webkit-details-marker { display: none; }
+
+    details .content {
+      padding: 0 1.2rem 1.2rem; font-size: 0.88rem;
+      color: var(--text2); line-height: 1.6;
+    }
+
+    details .content strong { color: #fff; }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--card-border);
+      color: var(--text3); text-align: center;
+      padding: 2.5rem 1.5rem; font-size: 0.82rem;
+    }
+
+    footer a { color: var(--dorado); text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+    footer p { margin-bottom: 0.5rem; color: var(--text3); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (min-width: 640px) {
+      .hero h1 { font-size: 2.8rem; }
+      .ranking-grid { grid-template-columns: 1fr 1fr; }
+      .no-list { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .top3 { grid-template-columns: 1fr; gap: 0.6rem; }
+      .top3-card { display: flex; align-items: center; gap: 0.8rem; text-align: left; padding: 1rem; }
+      .top3-medal { margin: 0; }
+      .top3-card .pct { margin-top: 0; font-size: 1.3rem; }
+      .method-grid, .ind-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate { animation: fadeInUp 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="flag-stripe">
+      <div class="flag-red"></div>
+      <div class="flag-white"></div>
+      <div class="flag-red"></div>
+    </div>
+    <div class="hero-body">
+      <div class="hero-content">
+        <div class="hero-badge">Basado en datos oficiales del JNE</div>
+        <h1>Elecciones Per&uacute; <span>2026</span></h1>
+        <p class="subtitle">De 38 partidos, solo 8 cumplen requisitos m&iacute;nimos de seriedad.<br>Sin opiniones. Solo datos. T&uacute; decides.</p>
+        <div class="countdown">
+          Faltan <span class="days-num" id="days">--</span> d&iacute;as para el <strong style="color:#fff">12 de Abril</strong>
+        </div>
+      </div>
+    </div>
+    <div class="flag-stripe">
+      <div class="flag-red"></div>
+      <div class="flag-white"></div>
+      <div class="flag-red"></div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#resumen">Resumen</a>
+      <a href="#embudo">El Embudo</a>
+      <a href="#filtros">Filtros</a>
+      <a href="#ranking">Ranking</a>
+      <a href="#descartados">Descartados</a>
+      <a href="#metodologia">M&eacute;todo</a>
+      <a href="#faq">Preguntas</a>
+    </div>
+  </nav>
+
+  <!-- RESUMEN -->
+  <section id="resumen">
+    <h2>En 30 segundos</h2>
+    <p class="section-subtitle">Lo esencial para quien tiene poco tiempo</p>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">&#x1F4CA;</div>
+      <div>Un ingeniero revis&oacute; los <strong>38 partidos inscritos</strong> usando <strong>datos p&uacute;blicos del JNE</strong> (no opiniones). Les aplic&oacute; filtros objetivos: cobertura nacional, candidatos sin sentencias, preparaci&oacute;n acad&eacute;mica, transparencia en ingresos. Solo <strong>8 partidos</strong> pasaron todo.</div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div><strong>Esto NO te dice por qui&eacute;n votar.</strong> Te muestra qu&eacute; partidos cumplen con lo m&iacute;nimo de seriedad seg&uacute;n los datos. La decisi&oacute;n final siempre es tuya.</div>
+    </div>
+
+    <h3>Los 3 mejor evaluados</h3>
+    <div class="top3">
+      <div class="top3-card gold">
+        <div class="top3-medal">1</div>
+        <div>
+          <div class="name">Buen Gobierno</div>
+          <div class="cand">Jorge Nieto Montesinos</div>
+          <div class="pct">82.5%</div>
+          <div class="orient-tag" style="background:rgba(251,191,36,0.15);color:#fcd34d;">Centro</div>
+        </div>
+      </div>
+      <div class="top3-card silver">
+        <div class="top3-medal">2</div>
+        <div>
+          <div class="name">Ahora Naci&oacute;n</div>
+          <div class="cand">Pablo L&oacute;pez Chau Nava</div>
+          <div class="pct">81.9%</div>
+          <div class="orient-tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">Izq. / Centro Izq.</div>
+        </div>
+      </div>
+      <div class="top3-card bronze">
+        <div class="top3-medal">3</div>
+        <div>
+          <div class="name">Fuerza y Libertad</div>
+          <div class="cand">Fiorella Molinelli</div>
+          <div class="pct">80.0%</div>
+          <div class="orient-tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">Der. / Centro Der.</div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.78rem;color:var(--text3);">Hay opciones en todo el espectro pol&iacute;tico. Elige seg&uacute;n tus valores.</p>
+  </section>
+
+  <!-- EMBUDO -->
+  <div class="section-alt">
+    <div class="section-inner" id="embudo">
+      <h2>De 38 partidos, solo 8 son serios</h2>
+      <p class="section-subtitle">Se revisaron todos con datos oficiales. Los que no cumpl&iacute;an, se descartaron.</p>
+
+      <div class="funnel">
+        <div class="funnel-step funnel-start">
+          <div class="step-header">
+            <div class="step-icon">&#x1F3DB;&#xFE0F;</div>
+            <div>
+              <div class="step-number">38 partidos</div>
+              <div class="step-title">Se presentaron a estas elecciones</div>
+            </div>
+          </div>
+          <div class="step-body">Son m&aacute;s de <strong>8,000 candidatos</strong> para presidente, senadores y diputados en todo el Per&uacute;. &iquest;C&oacute;mo saber cu&aacute;les son serios? Con datos.</div>
+        </div>
+
+        <div class="funnel-connector"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 0v28M6 22l6 6 6-6"/></svg></div>
+
+        <div class="funnel-step funnel-filter">
+          <div class="step-header">
+            <div class="step-icon">&#x1F5FA;&#xFE0F;</div>
+            <div>
+              <div class="step-number">10 partidos eliminados</div>
+              <div class="step-title">&iquest;Tienen candidatos en todo el Per&uacute;?</div>
+            </div>
+          </div>
+          <div class="step-body">10 partidos <strong>ni siquiera tienen candidatos a senadores en la mitad de las regiones</strong>. Ej: CPP tiene 0, Si Creo solo 5 de 27. Si no cubren el pa&iacute;s, &iquest;c&oacute;mo pretenden gobernarlo?</div>
+        </div>
+
+        <div class="funnel-connector"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 0v28M6 22l6 6 6-6"/></svg></div>
+
+        <div class="funnel-step funnel-filter">
+          <div class="step-header">
+            <div class="step-icon">&#x1F3DB;&#xFE0F;</div>
+            <div>
+              <div class="step-number">3 partidos m&aacute;s eliminados</div>
+              <div class="step-title">&iquest;Cubren Senado Y tambi&eacute;n Diputados?</div>
+            </div>
+          </div>
+          <div class="step-body">3 partidos cubrieron Senado pero <strong>no tienen suficientes candidatos para Diputados</strong>. Un partido serio cubre ambas c&aacute;maras. Ej: Unido Per&uacute; solo cubre 31 de 55 jurisdicciones.</div>
+        </div>
+
+        <div class="funnel-connector"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 0v28M6 22l6 6 6-6"/></svg></div>
+
+        <div class="funnel-step funnel-filter">
+          <div class="step-header">
+            <div class="step-icon">&#x1F50D;</div>
+            <div>
+              <div class="step-number">10 partidos m&aacute;s eliminados</div>
+              <div class="step-title">&iquest;Sus candidatos son confiables?</div>
+            </div>
+          </div>
+          <div class="step-body">
+            Se revis&oacute; a cada candidato y se descartaron partidos con:<br>
+            &#x2022; <strong>Demasiados sentenciados</strong> &mdash; Ej: Alianza para el Progreso tiene 20% con sentencia firme<br>
+            &#x2022; <strong>Sin educaci&oacute;n b&aacute;sica</strong> &mdash; Ej: Un Camino Diferente promedia menos que bachiller<br>
+            &#x2022; <strong>No dicen cu&aacute;nto ganan</strong> &mdash; Ej: Avanza Pa&iacute;s 53% declaran S/ 0. &iquest;De qu&eacute; viven?
+          </div>
+        </div>
+
+        <div class="funnel-connector"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 0v28M6 22l6 6 6-6"/></svg></div>
+
+        <div class="funnel-step funnel-result">
+          <div class="step-header">
+            <div class="step-icon">&#x2705;</div>
+            <div>
+              <div class="step-number">Quedan 8 partidos serios</div>
+              <div class="step-title">#PORESTOSSI &mdash; Los que pasaron todo</div>
+            </div>
+          </div>
+          <div class="step-body">
+            Cubren todo el pa&iacute;s, sin exceso de sentenciados, preparados y transparentes.<br><br>
+            <strong>Los otros 7 que tambi&eacute;n pasaron los n&uacute;meros se separaron</strong> porque participaron en el gobierno 2021-2026 (APRA, Renovaci&oacute;n Popular, Per&uacute; Libre, etc).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <section id="filtros">
+    <h2>&iquest;Qu&eacute; se evalu&oacute; exactamente?</h2>
+    <p class="section-subtitle">Cada filtro responde a una pregunta que todo votante deber&iacute;a hacerse</p>
+
+    <div class="filter-card fc-blue">
+      <h4><span class="fc-icon">&#x1F5FA;&#xFE0F;</span> &iquest;Tienen candidatos en todo el pa&iacute;s?</h4>
+      <p class="simple">Para el Senado hay 28 jurisdicciones. Un partido serio debe cubrir al menos el 70%. Si no tienen gente en las regiones, no conocen sus problemas.</p>
+      <span class="filter-tag tag-red">10 eliminados</span>
+      <span class="filter-tag tag-green">Quedan 28</span>
+    </div>
+
+    <div class="filter-card fc-green">
+      <h4><span class="fc-icon">&#x1F3DB;&#xFE0F;</span> &iquest;Cubren Senado Y Diputados?</h4>
+      <p class="simple">Deben atender al menos 70% de las 55 jurisdicciones totales entre ambas elecciones legislativas.</p>
+      <span class="filter-tag tag-red">3 eliminados</span>
+      <span class="filter-tag tag-green">Quedan 25</span>
+    </div>
+
+    <div class="filter-card fc-red">
+      <h4><span class="fc-icon">&#x2696;&#xFE0F;</span> &iquest;Tienen candidatos sentenciados?</h4>
+      <p class="simple">Si m&aacute;s del 10% tienen sentencias firmes, no merecen tu confianza. APP lleg&oacute; al 20%.</p>
+      <span class="filter-tag tag-red">3 eliminados: Podemos (11%), Fuerza Popular (12%), APP (20%)</span>
+      <span class="filter-tag tag-green">Quedan 22</span>
+    </div>
+
+    <div class="filter-card fc-purple">
+      <h4><span class="fc-icon">&#x1F393;</span> &iquest;Est&aacute;n preparados acad&eacute;micamente?</h4>
+      <p class="simple">Promedio m&iacute;nimo de nivel Bachiller (5/20). Si no tienen esa formaci&oacute;n, &iquest;podr&aacute;n crear buenas leyes?</p>
+      <span class="filter-tag tag-red">5 eliminados</span>
+      <span class="filter-tag tag-green">Quedan 17</span>
+    </div>
+
+    <div class="filter-card fc-orange">
+      <h4><span class="fc-icon">&#x1F4B0;</span> &iquest;Declaran sus ingresos?</h4>
+      <p class="simple">Si m&aacute;s del 30% dicen ganar S/ 0.00, &iquest;de qu&eacute; viven? &iquest;Qui&eacute;n los financia?</p>
+      <span class="filter-tag tag-red">2 eliminados: Integridad Democr&aacute;tica (44%), Avanza Pa&iacute;s (53%)</span>
+      <span class="filter-tag tag-green">Quedan 15</span>
+    </div>
+
+    <div class="filter-card fc-teal">
+      <h4><span class="fc-icon">&#x1F504;</span> &iquest;Participaron en el gobierno cuestionado?</h4>
+      <p class="simple">7 partidos estuvieron en el gobierno 2021-2026. Se separaron como #PORESTOSNO.</p>
+      <span class="filter-tag tag-green">Resultado: 8 partidos #PORESTOSSI</span>
+    </div>
+  </section>
+
+  <!-- RANKING -->
+  <div class="section-alt">
+    <div class="section-inner" id="ranking">
+      <h2>Ranking: Los 8 Partidos #PORESTOSSI</h2>
+      <p class="section-subtitle">Puntaje compuesto: Presidencial (20%) + Senado (50%) + Diputados (30%)</p>
+
+      <div class="ranking-grid">
+        <div class="partido-card podio-1">
+          <div class="partido-header">
+            <div class="partido-rank rank-1">1</div>
+            <div class="party-avatar pa-bg">BG</div>
+            <div class="partido-info">
+              <h3>Buen Gobierno</h3>
+              <div class="candidato">Jorge Nieto Montesinos</div>
+              <span class="espectro-tag esp-cen">Centro</span>
+            </div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="80%"></div></div><span class="val">80.0</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="86.4%"></div></div><span class="val">86.4</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="77.6%"></div></div><span class="val">77.6</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">82.5%</div></div>
+          <div class="indicadores-mini">
+            <div class="ind-mini"><span class="val good">94.9%</span>Sin sentencias</div>
+            <div class="ind-mini"><span class="val good">70.4%</span>Preparaci&oacute;n</div>
+            <div class="ind-mini"><span class="val good">83.5%</span>Declaran ingreso</div>
+            <div class="ind-mini"><span class="val good">82.3%</span>Libres #PorEstosNo</div>
+          </div>
+        </div>
+
+        <div class="partido-card podio-2">
+          <div class="partido-header">
+            <div class="partido-rank rank-2">2</div>
+            <div class="party-avatar pa-an">AN</div>
+            <div class="partido-info">
+              <h3>Ahora Naci&oacute;n</h3>
+              <div class="candidato">Pablo Alfonso L&oacute;pez Chau Nava</div>
+              <span class="espectro-tag esp-izq">Izquierda / Centro Izq.</span>
+            </div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="75.7%"></div></div><span class="val">75.7</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="85.2%"></div></div><span class="val">85.2</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="80.5%"></div></div><span class="val">80.5</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">81.9%</div></div>
+          <div class="indicadores-mini">
+            <div class="ind-mini"><span class="val good">94.8%</span>Sin sentencias</div>
+            <div class="ind-mini"><span class="val good">89.9%</span>Preparaci&oacute;n</div>
+            <div class="ind-mini"><span class="val good">94.8%</span>Declaran ingreso</div>
+            <div class="ind-mini"><span class="val good">64.9%</span>Libres #PorEstosNo</div>
+          </div>
+        </div>
+
+        <div class="partido-card podio-3">
+          <div class="partido-header">
+            <div class="partido-rank rank-3">3</div>
+            <div class="party-avatar pa-fl">FL</div>
+            <div class="partido-info">
+              <h3>Fuerza y Libertad</h3>
+              <div class="candidato">Fiorella Giannina Molinelli Aristondo</div>
+              <span class="espectro-tag esp-der">Derecha / Centro Der.</span>
+            </div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="73.3%"></div></div><span class="val">73.3</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="85.8%"></div></div><span class="val">85.8</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="74.6%"></div></div><span class="val">74.6</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">80.0%</div></div>
+          <div class="indicadores-mini">
+            <div class="ind-mini"><span class="val good">100%</span>Sin sentencias</div>
+            <div class="ind-mini"><span class="val good">76.2%</span>Preparaci&oacute;n</div>
+            <div class="ind-mini"><span class="val warn">72.8%</span>Declaran ingreso</div>
+            <div class="ind-mini"><span class="val good">76.5%</span>Libres #PorEstosNo</div>
+          </div>
+        </div>
+
+        <div class="partido-card">
+          <div class="partido-header">
+            <div class="partido-rank rank-4">4</div>
+            <div class="party-avatar pa-ob">OB</div>
+            <div class="partido-info"><h3>Obras</h3><div class="candidato">Ricardo Pablo Belmont Cassinelli</div></div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="66.7%"></div></div><span class="val">66.7</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="84.2%"></div></div><span class="val">84.2</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="76.8%"></div></div><span class="val">76.8</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">78.5%</div></div>
+        </div>
+
+        <div class="partido-card">
+          <div class="partido-header">
+            <div class="partido-rank rank-5">5</div>
+            <div class="party-avatar pa-pp">PP</div>
+            <div class="partido-info"><h3>Per&uacute; Primero</h3><div class="candidato">Mario Enrique Vizcarra Cornejo</div></div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="71.3%"></div></div><span class="val">71.3</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="85.5%"></div></div><span class="val">85.5</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="69.8%"></div></div><span class="val">69.8</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">78.0%</div></div>
+        </div>
+
+        <div class="partido-card">
+          <div class="partido-header">
+            <div class="partido-rank rank-6">6</div>
+            <div class="party-avatar pa-fe">FE</div>
+            <div class="partido-info"><h3>Frente de la Esperanza</h3><div class="candidato">Luis Fernando Olivera Vega</div></div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="72.3%"></div></div><span class="val">72.3</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="82.9%"></div></div><span class="val">82.9</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="72.5%"></div></div><span class="val">72.5</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">77.7%</div></div>
+        </div>
+
+        <div class="partido-card">
+          <div class="partido-header">
+            <div class="partido-rank rank-7">7</div>
+            <div class="party-avatar pa-pt">PT</div>
+            <div class="partido-info"><h3>Pa&iacute;s para Todos</h3><div class="candidato">Carlos Gonzalo &Aacute;lvarez Loayza</div></div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="73%"></div></div><span class="val">73.0</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="86.9%"></div></div><span class="val">86.9</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="65.4%"></div></div><span class="val">65.4</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">77.7%</div></div>
+        </div>
+
+        <div class="partido-card">
+          <div class="partido-header">
+            <div class="partido-rank rank-8">8</div>
+            <div class="party-avatar pa-lp">LP</div>
+            <div class="partido-info"><h3>Libertad Popular</h3><div class="candidato">Rafael Jorge Belaunde Llosa</div></div>
+          </div>
+          <div class="scores">
+            <div class="score-row"><span class="label">Presidencial</span><div class="score-track"><div class="score-fill fill-pres" data-width="46.7%"></div></div><span class="val">46.7</span></div>
+            <div class="score-row"><span class="label">Senado</span><div class="score-track"><div class="score-fill fill-sen" data-width="89.7%"></div></div><span class="val">89.7</span></div>
+            <div class="score-row"><span class="label">Diputados</span><div class="score-track"><div class="score-fill fill-dip" data-width="75.4%"></div></div><span class="val">75.4</span></div>
+          </div>
+          <div class="score-total"><div class="total-label">Puntaje General</div><div class="total-num">76.8%</div></div>
+        </div>
+      </div>
+
+      <h3>Tabla Comparativa</h3>
+      <div class="table-wrap">
+        <table class="comparison-table">
+          <thead><tr><th>#</th><th>Partido</th><th>Pres.<br><small>20%</small></th><th>Senado<br><small>50%</small></th><th>Diput.<br><small>30%</small></th><th>TOTAL</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td class="partido-name">Buen Gobierno</td><td>80.0</td><td>86.4</td><td>77.6</td><td><strong>82.5</strong></td></tr>
+            <tr><td>2</td><td class="partido-name">Ahora Naci&oacute;n</td><td>75.7</td><td>85.2</td><td>80.5</td><td><strong>81.9</strong></td></tr>
+            <tr><td>3</td><td class="partido-name">Fuerza y Libertad</td><td>73.3</td><td>85.8</td><td>74.6</td><td><strong>80.0</strong></td></tr>
+            <tr><td>4</td><td class="partido-name">Obras</td><td>66.7</td><td>84.2</td><td>76.8</td><td><strong>78.5</strong></td></tr>
+            <tr><td>5</td><td class="partido-name">Per&uacute; Primero</td><td>71.3</td><td>85.5</td><td>69.8</td><td><strong>78.0</strong></td></tr>
+            <tr><td>6</td><td class="partido-name">Frente de la Esperanza</td><td>72.3</td><td>82.9</td><td>72.5</td><td><strong>77.7</strong></td></tr>
+            <tr><td>7</td><td class="partido-name">Pa&iacute;s para Todos</td><td>73.0</td><td>86.9</td><td>65.4</td><td><strong>77.7</strong></td></tr>
+            <tr><td>8</td><td class="partido-name">Libertad Popular</td><td>46.7</td><td>89.7</td><td>75.4</td><td><strong>76.8</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCARTADOS -->
+  <section id="descartados">
+    <h2>Los que NO pasaron</h2>
+    <p class="section-subtitle">Cada partido fue eliminado por una raz&oacute;n espec&iacute;fica y verificable</p>
+
+    <h3>&#x1F5FA;&#xFE0F; Sin cobertura nacional</h3>
+    <div class="no-list">
+      <div class="no-item">CPP<span class="reason">0 jurisdicciones</span></div>
+      <div class="no-item">Si Creo<span class="reason">Solo 5 de 28</span></div>
+      <div class="no-item">PTE<span class="reason">Solo 7 de 28</span></div>
+      <div class="no-item">PPP<span class="reason">Solo 8 de 28</span></div>
+      <div class="no-item">Fe en el Per&uacute;<span class="reason">Solo 11 de 28</span></div>
+      <div class="no-item">Salvemos al Per&uacute;<span class="reason">15 + sin lista nacional</span></div>
+      <div class="no-item">PRIN<span class="reason">Solo 16 de 28</span></div>
+      <div class="no-item">Per&uacute; Acci&oacute;n<span class="reason">Solo 18 de 28</span></div>
+      <div class="no-item">Per&uacute; Moderno<span class="reason">18 + sin lista nacional</span></div>
+      <div class="no-item">Per&uacute; Federal<span class="reason">Solo 19 de 28</span></div>
+    </div>
+
+    <h3>&#x1F3DB;&#xFE0F; No cubren ambas c&aacute;maras</h3>
+    <div class="no-list">
+      <div class="no-item">Unido Per&uacute;<span class="reason">31 de 55 (< 70%)</span></div>
+      <div class="no-item">Primero La Gente<span class="reason">34 de 55 (< 70%)</span></div>
+      <div class="no-item">Partido Morado<span class="reason">38 de 55 (< 70%)</span></div>
+    </div>
+
+    <h3>&#x2696;&#xFE0F; Exceso de sentenciados (+10%)</h3>
+    <div class="no-list">
+      <div class="no-item">Podemos Per&uacute;<span class="reason">11% sentenciados</span></div>
+      <div class="no-item">Fuerza Popular<span class="reason">12% sentenciados</span></div>
+      <div class="no-item">Alianza p/ Progreso<span class="reason">20% sentenciados</span></div>
+    </div>
+
+    <h3>&#x1F393; Preparaci&oacute;n insuficiente</h3>
+    <div class="no-list">
+      <div class="no-item">Un Camino Diferente<span class="reason">&#x00CD;ndice: 2.95</span></div>
+      <div class="no-item">Cooperaci&oacute;n Popular<span class="reason">&#x00CD;ndice: 3.32</span></div>
+      <div class="no-item">FREPAP<span class="reason">&#x00CD;ndice: 3.39</span></div>
+      <div class="no-item">Verde<span class="reason">&#x00CD;ndice: 3.45</span></div>
+      <div class="no-item">Progresemos<span class="reason">&#x00CD;ndice: 3.75</span></div>
+    </div>
+
+    <h3>&#x1F4B0; No declaran ingresos</h3>
+    <div class="no-list">
+      <div class="no-item">Integridad Democr&aacute;tica<span class="reason">44% declaran S/ 0</span></div>
+      <div class="no-item">Avanza Pa&iacute;s<span class="reason">53% declaran S/ 0</span></div>
+    </div>
+
+    <h3>&#x1F504; Estuvieron en el gobierno 2021-2026</h3>
+    <div class="no-list">
+      <div class="no-item no-orange">Unidad Nacional<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">APRA<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">Venceremos<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">Somos Per&uacute;<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">Per&uacute; Libre<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">Juntos por el Per&uacute;<span class="reason">Participaron en gobierno</span></div>
+      <div class="no-item no-orange">Renovaci&oacute;n Popular<span class="reason">Participaron en gobierno</span></div>
+    </div>
+  </section>
+
+  <!-- METODOLOGIA -->
+  <div class="section-alt">
+    <div class="section-inner" id="metodologia">
+      <h2>&iquest;C&oacute;mo se calcul&oacute; el puntaje?</h2>
+      <p class="section-subtitle">El puntaje final combina 3 evaluaciones con estos pesos</p>
+
+      <div class="method-grid">
+        <div class="method-item">
+          <div class="peso" style="color:#60a5fa;">20%</div>
+          <div class="desc"><strong>Presidencial</strong>Plancha libre de partidos cuestionados</div>
+        </div>
+        <div class="method-item">
+          <div class="peso" style="color:#34d399;">50%</div>
+          <div class="desc"><strong>Senado</strong>No puede cerrarse constitucionalmente</div>
+        </div>
+        <div class="method-item">
+          <div class="peso" style="color:#fb923c;">30%</div>
+          <div class="desc"><strong>Diputados</strong>Representantes por cada regi&oacute;n</div>
+        </div>
+      </div>
+
+      <h3>Los 6 indicadores</h3>
+      <div class="ind-grid">
+        <div class="ind-item"><div class="ind-peso">20%</div><div class="ind-desc">Sin sentencias firmes</div></div>
+        <div class="ind-item"><div class="ind-peso">10%</div><div class="ind-desc">Preparaci&oacute;n acad&eacute;mica</div></div>
+        <div class="ind-item"><div class="ind-peso">15%</div><div class="ind-desc">Declaran ingresos reales</div></div>
+        <div class="ind-item"><div class="ind-peso">20%</div><div class="ind-desc">Regiones atendidas</div></div>
+        <div class="ind-item"><div class="ind-peso">15%</div><div class="ind-desc">Sin presencia en REINFO</div></div>
+        <div class="ind-item"><div class="ind-peso">20%</div><div class="ind-desc">Libres de #PorEstosNo</div></div>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon">&#x1F4D6;</div>
+        <div><strong>Fuente:</strong> Jurado Nacional de Elecciones (votoinformado.jne.gob.pe) y territoriotomado.pe para REINFO.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>Preguntas Frecuentes</h2>
+    <p class="section-subtitle">Las dudas m&aacute;s comunes sobre este estudio</p>
+
+    <details><summary>&iquest;Esto me dice por qui&eacute;n votar?</summary><div class="content"><strong>No.</strong> Es un an&aacute;lisis basado en datos. Tu voto debe considerar tambi&eacute;n planes de gobierno y tu posici&oacute;n ideol&oacute;gica. Hay opciones en izquierda, centro y derecha.</div></details>
+    <details><summary>&iquest;Por qu&eacute; el Senado pesa m&aacute;s (50%)?</summary><div class="content">Seg&uacute;n la Constituci&oacute;n modificada en 2024, el Senado <strong>no puede ser cerrado</strong>. Los senadores estar&aacute;n ah&iacute; todo el periodo.</div></details>
+    <details><summary>&iquest;Qu&eacute; es el &iacute;ndice de preparaci&oacute;n?</summary><div class="content">Mide el nivel educativo promedio de los candidatos (0 a 20). Menos de 5.0 = sin t&iacute;tulo de Bachiller.</div></details>
+    <details><summary>&iquest;Qu&eacute; es REINFO?</summary><div class="content">Registro de Formalizaci&oacute;n Minera. Candidatos ah&iacute; podr&iacute;an tener conflictos de inter&eacute;s con miner&iacute;a informal. Fuente: territoriotomado.pe</div></details>
+    <details><summary>&iquest;Qu&eacute; son los #PORESTOSNO?</summary><div class="content">7 partidos que pasaron los filtros pero participaron en el gobierno 2021-2026: Unidad Nacional, APRA, Venceremos, Somos Per&uacute;, Per&uacute; Libre, Juntos por el Per&uacute;, Renovaci&oacute;n Popular.</div></details>
+    <details><summary>&iquest;Qui&eacute;n hizo este estudio?</summary><div class="content">El <strong>Dr. Ing. Andr&eacute;s Sotil Ch&aacute;vez</strong>, publicado el 10 de marzo de 2026. Estudio completo en <strong>lapelotaennuestracancha.com</strong>. TikTok: @andressotil</div></details>
+    <details><summary>&iquest;Y si mi partido favorito no est&aacute;?</summary><div class="content">Revisa en "Descartados" el motivo. Si no compartes los criterios, puedes hacer tu propio an&aacute;lisis con datos del JNE. Todo es p&uacute;blico.</div></details>
+    <details><summary>&iquest;D&oacute;nde investigo m&aacute;s?</summary><div class="content"><ul style="padding-left:1.2rem;margin:0;"><li><strong>JNE:</strong> votoinformado.jne.gob.pe</li><li><strong>Estudio completo:</strong> lapelotaennuestracancha.com</li><li><strong>Tu perfil ideol&oacute;gico:</strong> elmalmenor.com</li><li><strong>REINFO:</strong> territoriotomado.pe</li></ul></div></details>
+  </section>
+
+  <footer>
+    <p style="color:var(--text2)"><strong style="color:#fff">An&aacute;lisis original:</strong> Dr. Ing. Andr&eacute;s Sotil Ch&aacute;vez &mdash; 10 de marzo de 2026</p>
+    <p>Datos: <a href="https://votoinformado.jne.gob.pe/home" target="_blank" rel="noopener">Voto Informado &mdash; JNE</a></p>
+    <p>Estudio completo: <a href="https://www.lapelotaennuestracancha.com" target="_blank" rel="noopener">lapelotaennuestracancha.com</a></p>
+    <p style="margin-top:1.2rem;font-size:0.72rem;opacity:0.4;">Sin afiliaci&oacute;n pol&iacute;tica. Informaci&oacute;n de fuentes p&uacute;blicas. &mdash; Elecciones 12 de Abril 2026</p>
+  </footer>
+
+  <script>
+    // Countdown
+    function updateCountdown() {
+      var el = document.getElementById('days');
+      if (!el) return;
+      var diff = new Date('2026-04-12T07:00:00-05:00') - new Date();
+      el.textContent = Math.max(0, Math.ceil(diff / 86400000));
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    // Animate bars on scroll - NO !important, just set style.width directly
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.score-fill').forEach(function(bar) {
+            var w = bar.getAttribute('data-width');
+            if (w) setTimeout(function(){ bar.style.width = w; }, 100);
+          });
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.partido-card').forEach(function(el) { obs.observe(el); });
+  </script>
+
+</body>
+</html>
